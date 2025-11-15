@@ -27,26 +27,34 @@ jobs:
         run: |
           python scripts/generate_pdfs.py
 
-      - name: Generate links list safely (handles folders with spaces)
+      - name: Generate links list (safe for spaces)
         run: |
           echo "" > links.md
 
-          find . -maxdepth 1 -type d ! -name "." -print0 | sort -z | \
-          while IFS= read -r -d '' f; do
-            fname=$(basename "$f")
-            pdf="$f/lecture_${fname}.pdf"
-            if [ -f "$pdf" ]; then
-              printf -- "- [%s](./%s/lecture_%s.pdf)\n" "$fname" "$fname" "$fname" >> links.md
-            fi
-          done
+          find . -maxdepth 1 -type d ! -name "." -print0 \
+          | sort -z \
+          | while IFS= read -r -d '' f; do
+              fname=$(basename "$f")
+              pdf="$f/lecture_${fname}.pdf"
+              if [ -f "$pdf" ]; then
+                printf -- "- [%s](./%s/lecture_%s.pdf)\n" "$fname" "$fname" "$fname" >> links.md
+              fi
+            done
 
           echo "PDF_LINKS<<EOF" >> $GITHUB_ENV
           cat links.md >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Update README
+      - name: Update README with AWK (stable & multiline-safe)
         run: |
-          sed -i "/<!--START_LECTURES-->/,/<!--END_LECTURES-->/c <!--START_LECTURES-->$(printf '%s' "$PDF_LINKS" | awk '{printf "%s\\n", $0}')<!--END_LECTURES-->" README.md
+          awk -v new="$PDF_LINKS" '
+            BEGIN {FS=OFS=""}
+            /<!--START_LECTURES-->/ {print; print new; inblock=1; next}
+            /<!--END_LECTURES-->/ {inblock=0; print; next}
+            !inblock {print}
+          ' README.md > README.tmp
+
+          mv README.tmp README.md
 
       - name: Commit & push
         run: |
