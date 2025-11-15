@@ -1,20 +1,8 @@
-name: Generate PDFs
+name: test
+permissions:
+  contents: write
 
-on:
-  push:
-    paths:
-      - "**.jpg"
-      - "**.jpeg"
-      - "**.png"
-      - "**.heic"
-      - "**.heif"
-      - "**.gif"
-      - "**.bmp"
-      - "**.tiff"
-      - "**.webp"
-      - "scripts/**"
-      - ".github/workflows/generate-pdfs.yml"
-  workflow_dispatch:
+on: push
 
 jobs:
   build:
@@ -40,7 +28,6 @@ jobs:
           python scripts/generate_pdfs.py
 
       - name: Generate links list
-        id: gen
         run: |
           echo "" > links.md
           folders=$(find . -maxdepth 1 -type d ! -name "." | sort)
@@ -51,16 +38,27 @@ jobs:
               echo "- [${fname}](./${fname}/lecture_${fname}.pdf)" >> links.md
             fi
           done
-          echo "::set-output name=links::$(cat links.md)"
+
+          # передаём содержимое файла в переменную окружения
+          LINKS="$(cat links.md)"
+          LINKS="${LINKS//$'\n'/\\n}"
+          echo "PDF_LINKS=$LINKS" >> $GITHUB_ENV
 
       - name: Update README
         run: |
-          awk '
-            BEGIN {in_block=0}
-            /<!--START_LECTURES-->/ {print; print ENVIRON["PDF_LINKS"]; in_block=1; next}
-            /<!--END_LECTURES-->/ {in_block=0}
-            !in_block
-          ' PDF_LINKS="$(cat links.md)" README.md > tmp.md
+          awk -v links="$PDF_LINKS" '
+            /<!--START_LECTURES-->/ {
+              print
+              print links
+              next
+            }
+            /<!--END_LECTURES-->/ {
+              print
+              next
+            }
+            !done
+            {print}
+          ' README.md > tmp.md
 
           mv tmp.md README.md
 
