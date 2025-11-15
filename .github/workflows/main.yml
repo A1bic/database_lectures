@@ -1,4 +1,4 @@
-name: Create PDFs and update README
+name: main
 permissions:
   contents: write
 
