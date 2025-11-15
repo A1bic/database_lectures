@@ -46,7 +46,7 @@ jobs:
 
       - name: Update README
         run: |
-          sed -i "/<!--START_LECTURES-->/,/<!--END_LECTURES-->/c <!--START_LECTURES-->$(printf '%s' "$PDF_LINKS" | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/\\n/\n/g')<!--END_LECTURES-->" README.md
+          sed -i "/<!--START_LECTURES-->/,/<!--END_LECTURES-->/c <!--START_LECTURES-->$(printf '%s' "$PDF_LINKS" | awk '{printf "%s\\n", $0}')<!--END_LECTURES-->" README.md
 
       - name: Commit & push
         run: |
