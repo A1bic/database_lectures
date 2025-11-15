@@ -1,7 +1,58 @@
 name: test
 on: push
+
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "It works"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          pip install pillow pillow-heif
+
+      - name: Run PDF generator
+        run: |
+          python scripts/generate_pdfs.py
+
+      - name: Generate links list
+        id: gen
+        run: |
+          echo "" > links.md
+          folders=$(find . -maxdepth 1 -type d ! -name "." | sort)
+          for f in $folders; do
+            fname=$(basename "$f")
+            pdf="$f/lecture_${fname}.pdf"
+            if [ -f "$pdf" ]; then
+              echo "- [${fname}](./${fname}/lecture_${fname}.pdf)" >> links.md
+            fi
+          done
+          echo "::set-output name=links::$(cat links.md)"
+
+      - name: Update README
+        run: |
+          awk '
+            BEGIN {in_block=0}
+            /<!--START_LECTURES-->/ {print; print ENVIRON["PDF_LINKS"]; in_block=1; next}
+            /<!--END_LECTURES-->/ {in_block=0}
+            !in_block
+          ' PDF_LINKS="$(cat links.md)" README.md > tmp.md
+
+          mv tmp.md README.md
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add README.md **/*pdf || true
+          git diff --cached --quiet || git commit -m "Auto-update PDFs and README"
+          git push
