@@ -1,4 +1,4 @@
-name: Create PDFs and update README
+name: Generate PDFs
 permissions:
   contents: write
 
@@ -27,40 +27,26 @@ jobs:
         run: |
           python scripts/generate_pdfs.py
 
-      - name: Generate links list
+      - name: Generate links list safely (handles folders with spaces)
         run: |
           echo "" > links.md
-          folders=$(find . -maxdepth 1 -type d ! -name "." | sort)
-          for f in $folders; do
+
+          find . -maxdepth 1 -type d ! -name "." -print0 | sort -z | \
+          while IFS= read -r -d '' f; do
             fname=$(basename "$f")
             pdf="$f/lecture_${fname}.pdf"
             if [ -f "$pdf" ]; then
-              echo "- [${fname}](./${fname}/lecture_${fname}.pdf)" >> links.md
+              printf -- "- [%s](./%s/lecture_%s.pdf)\n" "$fname" "$fname" "$fname" >> links.md
             fi
           done
 
-          # передаём содержимое файла в переменную окружения
-          LINKS="$(cat links.md)"
-          LINKS="${LINKS//$'\n'/\\n}"
-          echo "PDF_LINKS=$LINKS" >> $GITHUB_ENV
+          echo "PDF_LINKS<<EOF" >> $GITHUB_ENV
+          cat links.md >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Update README
         run: |
-          awk -v links="$PDF_LINKS" '
-            /<!--START_LECTURES-->/ {
-              print
-              print links
-              next
-            }
-            /<!--END_LECTURES-->/ {
-              print
-              next
-            }
-            !done
-            {print}
-          ' README.md > tmp.md
-
-          mv tmp.md README.md
+          sed -i "/<!--START_LECTURES-->/,/<!--END_LECTURES-->/c <!--START_LECTURES-->$(printf '%s' \"$PDF_LINKS\" | sed ':a;N;$!ba;s/\n/\\\\n/g')<!--END_LECTURES-->" README.md
 
       - name: Commit & push
         run: |
