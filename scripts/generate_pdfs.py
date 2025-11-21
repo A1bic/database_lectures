@@ -27,26 +27,41 @@ def load_image(path):
 def main():
     base_dir = os.getcwd()
 
-    # Идём по всем папкам
+    # Идём по всем папкам лекций
     for folder in os.listdir(base_dir):
         full_path = os.path.join(base_dir, folder)
         if not os.path.isdir(full_path):
             continue
 
-        # Список изображений внутри папки
-        images = [
-            f for f in os.listdir(full_path)
-            if is_image_file(f)
-        ]
+        # Пропускаем служебные папки
+        if folder in ['scripts', '.git'] or folder.startswith('.'):
+            continue
+
+        # Проверяем наличие папки images внутри лекции
+        images_folder_path = os.path.join(full_path, 'images')
+        if not os.path.isdir(images_folder_path):
+            print(f"Пропускаем {folder}: нет папки 'images'")
+            continue
+
+        # Список изображений внутри папки images
+        try:
+            images = [
+                f for f in os.listdir(images_folder_path)
+                if is_image_file(f)
+            ]
+        except FileNotFoundError:
+            print(f"Папка images не найдена в {folder}")
+            continue
 
         if not images:
-            continue  # Пропускаем пустые папки
+            print(f"Пропускаем {folder}: нет изображений в папке 'images'")
+            continue
 
         images.sort()  # Алфавитная сортировка
 
         loaded_images = []
         for img_name in images:
-            img_path = os.path.join(full_path, img_name)
+            img_path = os.path.join(images_folder_path, img_name)
             try:
                 img = load_image(img_path)
                 # Приведение к RGB — важно для PDF
@@ -57,12 +72,13 @@ def main():
                 print(f"Ошибка чтения {img_path}: {e}")
 
         if not loaded_images:
+            print(f"Пропускаем {folder}: не удалось загрузить изображения")
             continue
 
-        # Имя PDF
+        # Имя PDF (сохраняем в папке лекции, а не в images)
         pdf_path = os.path.join(
             full_path,
-            f"lecture_{folder}.pdf"
+            f"{folder}.pdf"
         )
 
         # Сохранение PDF (первое изображение + остальные)
@@ -72,7 +88,7 @@ def main():
         else:
             first_image.save(pdf_path, "PDF", save_all=True, append_images=loaded_images[1:])
 
-        print(f"Создан PDF: {pdf_path}")
+        print(f"Создан PDF: {pdf_path} (из {len(loaded_images)} изображений)")
 
 if __name__ == "__main__":
     main()
