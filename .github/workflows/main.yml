@@ -1,0 +1,76 @@
+name: Generate PDFs
+
+permissions:
+  contents: write
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          pip install pillow pillow-heif
+
+      - name: Run PDF generator
+        run: |
+          python scripts/generate_pdfs.py
+
+      - name: Generate links list (handles folders with spaces)
+        run: |
+          echo "" > links.md
+
+          # берём только папки лекций в корне, включая с пробелами
+          find . -maxdepth 1 -type d ! -name "." ! -name "scripts" ! -name ".git" -print0 \
+          | sort -z \
+          | while IFS= read -r -d '' f; do
+              fname=$(basename "$f")
+              pdf="$f/lecture_${fname}.pdf"
+              if [ -f "$pdf" ]; then
+                # ссылка вида ./lecture 1/lecture_lecture 1.pdf
+                printf -- "- [%s](./%s/lecture_%s.pdf)\n" "$fname" "$fname" "$fname" >> links.md
+              fi
+            done
+
+      - name: Update README (надёжно, через awk)
+        run: |
+          links="$(cat links.md)"
+
+          awk -v new="$links" '
+            /<!--START_LECTURES-->/ {
+              print;       # печатаем сам маркер
+              print new;   # сюда вставляется многострочный список ссылок
+              inblock=1;
+              next;
+            }
+            /<!--END_LECTURES-->/ {
+              inblock=0;
+              print;       # печатаем закрывающий маркер
+              next;
+            }
+            !inblock {
+              print;       # печатаем все остальные строки README как есть
+            }
+          ' README.md > README.tmp
+
+          mv README.tmp README.md
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add README.md **/*pdf || true
+          git diff --cached --quiet || git commit -m "Auto-update PDFs and README"
+          git push
