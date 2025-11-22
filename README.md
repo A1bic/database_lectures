@@ -5,17 +5,21 @@
 
 <!--START_LECTURES-->
 
-- [lecture_1](lecture_01/lecture_1.pdf)
+- [lecture_01](./lecture_01/lecture_01.pdf)
+- [lecture_02](./lecture_02/lecture_02.pdf)
+- [lecture_03](./lecture_03/lecture_03.pdf)
+- [lecture_04](./lecture_04/lecture_04.pdf)
+- [lecture_05](./lecture_05/lecture_05.pdf)
+- [lecture_06](./lecture_06/lecture_06.pdf)
+- [lecture_07](./lecture_07/lecture_07.pdf)
+  - [Конспект](./lecture_07/README.md)
+- [lecture_08](./lecture_08/lecture_08.pdf)
+- [lecture_09](./lecture_09/lecture_09.pdf)
+  - [Конспект](./lecture_09/README.md)
+- [lecture_1](./lecture_1/lecture_1.pdf)
 - [lecture_10](./lecture_10/lecture_10.pdf)
+  - [Конспект](./lecture_10/README.md)
 - [lecture_11](./lecture_11/lecture_11.pdf)
-- [lecture_2](lecture_02/lecture_2.pdf)
-- [lecture_3](lecture_03/lecture_3.pdf)
-- [lecture_4](lecture_04/lecture_4.pdf)
-- [lecture_5](lecture_05/lecture_5.pdf)
-- [lecture_6](lecture_06/lecture_6.pdf)
-- [lecture_7](lecture_07/lecture_7.pdf)
-- [lecture_8](lecture_08/lecture_8.pdf)
-- [lecture_9](lecture_09/lecture_9.pdf)
 <!--END_LECTURES-->
 
 ## Описание
