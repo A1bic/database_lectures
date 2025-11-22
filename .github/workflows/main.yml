@@ -37,10 +37,20 @@ jobs:
           | sort -z \
           | while IFS= read -r -d '' f; do
               fname=$(basename "$f")
-              pdf="$f/lecture_${fname}.pdf"
-              if [ -f "$pdf" ]; then
-                # ссылка вида ./lecture 1/lecture_lecture 1.pdf
-                printf -- "- [%s](./%s/lecture_%s.pdf)\n" "$fname" "$fname" "$fname" >> links.md
+              pdf="$f/${fname}.pdf"
+
+              # если PDF не существует — пропускаем
+              if [ ! -f "$pdf" ]; then
+                continue
+              fi
+
+              # основная ссылка на PDF лекции
+              printf -- "- [%s](./%s/%s.pdf)\n" "$fname" "$fname" "$fname" >> links.md
+
+              # если внутри папки есть README.md — добавляем под-пункт "Конспект"
+              if [ -f "$f/README.md" ]; then
+                # два пробела перед "-" дают вложенный пункт в markdown
+                printf -- "  - [Конспект](./%s/README.md)\n" "$fname" >> links.md
               fi
             done
 
