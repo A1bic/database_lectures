@@ -289,3 +289,8 @@ Truncate
 
 ## Форма блока  
 ![](src/44451473ed66dff746b22d3b8d71b264.png)
+
+
+🌱 Авторы: \
+salt-caramel \
+notakeith
