@@ -10,6 +10,7 @@
 - [lecture_02](./lecture_02/lecture_02.pdf)
   - [Конспект](./lecture_02/README.md)
 - [lecture_03](./lecture_03/lecture_03.pdf)
+  - [Конспект](./lecture_03/README.md)
 - [lecture_04](./lecture_04/lecture_04.pdf)
   - [Конспект](./lecture_04/README.md)
 - [lecture_05](./lecture_05/lecture_05.pdf)
