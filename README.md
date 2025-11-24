@@ -14,6 +14,7 @@
 - [lecture_04](./lecture_04/lecture_04.pdf)
   - [Конспект](./lecture_04/README.md)
 - [lecture_05](./lecture_05/lecture_05.pdf)
+  - [Конспект](./lecture_05/README.md)
 - [lecture_06](./lecture_06/lecture_06.pdf)
 - [lecture_07](./lecture_07/lecture_07.pdf)
   - [Конспект](./lecture_07/README.md)
