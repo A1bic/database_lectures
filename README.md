@@ -16,6 +16,7 @@
 - [lecture_05](./lecture_05/lecture_05.pdf)
   - [Конспект](./lecture_05/README.md)
 - [lecture_06](./lecture_06/lecture_06.pdf)
+  - [Конспект](./lecture_06/README.md)
 - [lecture_07](./lecture_07/lecture_07.pdf)
   - [Конспект](./lecture_07/README.md)
 - [lecture_08](./lecture_08/lecture_08.pdf)
@@ -25,6 +26,7 @@
 - [lecture_10](./lecture_10/lecture_10.pdf)
   - [Конспект](./lecture_10/README.md)
 - [lecture_11](./lecture_11/lecture_11.pdf)
+  - [Конспект](./lecture_11/README.md)
 <!--END_LECTURES-->
 
 ## Описание
