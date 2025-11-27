@@ -51,7 +51,7 @@ ACID
 	fsync = on
 	synchronous_commit = on
 	wal_buffers = 64MB
-	```
+```
 
 ### synchronous_commit
 - on
