@@ -27,6 +27,7 @@
   - [Конспект](./lecture_10/README.md)
 - [lecture_11](./lecture_11/lecture_11.pdf)
   - [Конспект](./lecture_11/README.md)
+- [lecture_12](./lecture_12/lecture_12.pdf)
 <!--END_LECTURES-->
 
 ## Описание
