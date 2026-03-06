@@ -29,6 +29,8 @@
   - [Конспект](./lecture_11_Distributed_DB/README.md)
 - [lecture_12_DB_Designing](./lecture_12_DB_Designing/lecture_12_DB_Designing.pdf)
 - [lecture_13_Migrations](./lecture_13_Migrations/lecture_13_Migrations.pdf)
+- [lecture_14_Docker](./lecture_14_Docker/lecture_14_Docker.pdf)
+- [lecture_15_Test_Migrations](./lecture_15_Test_Migrations/lecture_15_Test_Migrations.pdf)
 <!--END_LECTURES-->
 
 ## Описание
