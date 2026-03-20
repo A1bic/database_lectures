@@ -31,6 +31,7 @@
 - [lecture_13_Migrations](./lecture_13_Migrations/lecture_13_Migrations.pdf)
 - [lecture_14_Docker](./lecture_14_Docker/lecture_14_Docker.pdf)
 - [lecture_15_Test_Migrations](./lecture_15_Test_Migrations/lecture_15_Test_Migrations.pdf)
+- [lecture_16_Postgres_Architecture](./lecture_16_Postgres_Architecture/lecture_16_Postgres_Architecture.pdf)
 <!--END_LECTURES-->
 
 ## Описание
