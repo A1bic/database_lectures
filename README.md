@@ -33,6 +33,7 @@
 - [lecture_15_Test_Migrations](./lecture_15_Test_Migrations/lecture_15_Test_Migrations.pdf)
 - [lecture_16_Postgres_Architecture](./lecture_16_Postgres_Architecture/lecture_16_Postgres_Architecture.pdf)
 - [lecture_17_Monitoring](./lecture_17_Monitoring/lecture_17_Monitoring.pdf)
+- [lecture_18_Inter-Service_Communication](./lecture_18_Inter-Service_Communication/lecture_18_Inter-Service_Communication.pdf)
 <!--END_LECTURES-->
 
 ## Описание
