@@ -35,6 +35,8 @@
 - [lecture_17_Monitoring](./lecture_17_Monitoring/lecture_17_Monitoring.pdf)
 - [lecture_18_Inter-Service_Communication](./lecture_18_Inter-Service_Communication/lecture_18_Inter-Service_Communication.pdf)
 - [lecture_19_Mongo](./lecture_19_Mongo/lecture_19_Mongo.pdf)
+- [lecture_20_Patroni](./lecture_20_Patroni/lecture_20_Patroni.pdf)
+- [lecture_21_Vector_Database_and_RAG](./lecture_21_Vector_Database_and_RAG/lecture_21_Vector_Database_and_RAG.pdf)
 <!--END_LECTURES-->
 
 ## Описание
